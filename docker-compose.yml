@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+  db:
+    image: postgres:15.2-alpine
+    ports:
+      - '127.0.0.1:5435:5432'
+    environment:
+      - POSTGRES_DB=tgsp
+      - POSTGRES_USER=tgsp
+      - POSTGRES_PASSWORD=1234abc

@@ -14,27 +14,12 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { useTheme } from "@mui/material/styles";
-import TextField from "@mui/material/TextField";
-
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-
 import MaterialLink from "@mui/material/Link";
-
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-
 import Grid from "@mui/material/Grid";
+import prisma from "utils/prisma";
+import { useRouter } from "next/router";
+
+import CreateVmDialog from "components/createvmdialog";
 
 function createData(id, name, type, createdAt) {
   return { id, name, type, createdAt };
@@ -46,15 +31,18 @@ const rows = [
 ];
 
 export async function getServerSideProps(context) {
+  const templates = await prisma.VirtualServerTemplate.findMany();
+  const servers = await prisma.VirtualServer.findMany({
+    where: { userId: "1" },
+  });
+
   return {
-    props: {},
+    props: { templates },
   };
 }
 
-export default function Index() {
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
-
+export default function Index({ user, templates }) {
+  const router = useRouter();
   const [openVmDialog, setOpenVmDialog] = useState(false);
 
   return (
@@ -106,6 +94,17 @@ export default function Index() {
                 Coming soon - stay tuned!
               </Typography>
             </CardContent>
+            <CardActions>
+              <Button
+                color="primary"
+                variant="outlined"
+                onClick={() => {
+                  router.push("/game");
+                }}
+              >
+                See available games
+              </Button>
+            </CardActions>
           </Card>
         </Grid>
       </Grid>
@@ -139,82 +138,12 @@ export default function Index() {
           </TableBody>
         </Table>
       </TableContainer>
-
-      <Dialog
-        fullScreen={fullScreen}
-        open={openVmDialog}
-        onClose={() => {
-          setOpenVmDialog(false);
-        }}
-        aria-labelledby="Launch new Linux VM"
-      >
-        <DialogTitle id="vm-dialog-title">{"Launch new Linux VM"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            To get started, simply choose a size and template that best fits
-            your needs.
-          </DialogContentText>
-          <DialogContentText sx={{ pt: 1 }}>
-            Upon creating the instance, you will receive a username and password
-            to access it. You can modify the password at any time to ensure the
-            security of your account.
-          </DialogContentText>
-          <DialogContentText sx={{ pt: 1 }}>
-            All Virtual Machines receive both public IPv4 and IPv6 addresses, as
-            well as 60 GB of SSD storage.
-          </DialogContentText>
-          <TextField
-            sx={{ mt: 2 }}
-            margin="normal"
-            id="name"
-            label="Instance name"
-            fullWidth
-            defaultValue="vm-asdadat"
-            variant="filled"
-          />
-          <FormControl fullWidth sx={{ mt: 2 }}>
-            <InputLabel>VM Template</InputLabel>
-            <Select label="Instance Size" variant="filled">
-              <MenuItem value={20}>Debian 11 (bullseye)</MenuItem>
-              <MenuItem value={10}>Ubuntu 22.04 (Jammy Jellyfish)</MenuItem>
-              <MenuItem value={10}>Rocky Linux 9</MenuItem>
-            </Select>
-          </FormControl>
-          <FormControl fullWidth sx={{ mt: 2 }}>
-            <InputLabel>VM Size</InputLabel>
-            <Select label="Instance Size" variant="filled">
-              <MenuItem value={10}>Medium (2 vCPU & 4 GB Memory)</MenuItem>
-              <MenuItem value={20}>Large (4 vCPU & 8 GB Memory)</MenuItem>
-            </Select>
-          </FormControl>
-          <FormGroup>
-            <FormControlLabel
-              sx={{ mt: 2 }}
-              control={<Checkbox />}
-              label="I acknowledge that I am accepting the conditions of using this service and that all data will be permanently deleted on Sunday April 9th, 2023 at 06:00"
-            />
-          </FormGroup>
-          <DialogContentText sx={{ pt: 1 }}>
-            This VM will use all 8 available credits.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={() => {
-              setOpenVmDialog(false);
-            }}
-          >
-            Cancel
-          </Button>
-          <Button
-            onClick={() => {
-              setOpenVmDialog(false);
-            }}
-          >
-            Launch
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <CreateVmDialog
+        user={user}
+        templates={templates}
+        openVmDialog={openVmDialog}
+        setOpenVmDialog={setOpenVmDialog}
+      />
     </>
   );
 }

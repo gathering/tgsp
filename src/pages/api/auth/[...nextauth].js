@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import getConfig from "next/config";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { prisma } from "utils/prismadb";
+import prisma from "utils/prisma";
 
 const { serverRuntimeConfig } = getConfig();
 
@@ -43,12 +43,16 @@ export const authOptions = {
   callbacks: {
     jwt({ token, account, user }) {
       if (user) {
+        token.id = user?.id;
         token.role = user?.role;
+        token.username = user?.username;
       }
       return token;
     },
     session({ session, token }) {
-      session.user.role = token.role;
+      session.user.id = token?.id;
+      session.user.role = token?.role;
+      session.user.username = token?.username;
       return session;
     },
   },

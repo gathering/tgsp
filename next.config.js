@@ -13,6 +13,9 @@ const nextConfig = {
       client_userinfo_url: process.env.CLIENT_USERINFO_URL,
     },
   },
+  publicRuntimeConfig: {
+    url: process.env.URL,
+  },
 };
 
 module.exports = nextConfig;

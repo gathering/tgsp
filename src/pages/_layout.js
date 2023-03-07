@@ -23,7 +23,7 @@ import MaterialLink from "@mui/material/Link";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
-export default function Layout({ children }) {
+export default function Layout({ user, children }) {
   const router = useRouter();
   const { data: session } = useSession();
 
@@ -45,7 +45,7 @@ export default function Layout({ children }) {
         justifyContent="center"
       >
         <Fragment>
-          <AppBar style={{ background: "#2E3B55" }}>
+          <AppBar style={{ background: "#235b79" }}>
             <Toolbar>
               <Typography variant="h6" sx={{ flexGrow: 1 }}>
                 <Link
@@ -62,11 +62,16 @@ export default function Layout({ children }) {
                   textAlign: "center",
                 }}
               >
-                <Tooltip title="You have 8 credits">
-                  <Badge badgeContent={8} color="success">
-                    <TokenIcon />
-                  </Badge>
-                </Tooltip>
+                {user?.credits && (
+                  <Tooltip title={`You have ${user?.credits} credits`}>
+                    <Badge
+                      badgeContent={user?.credits}
+                      color={user?.credits >= 1 ? "success" : "warning"}
+                    >
+                      <TokenIcon />
+                    </Badge>
+                  </Tooltip>
+                )}
                 <Tooltip title="Account">
                   <IconButton
                     onClick={handleClick}
@@ -179,8 +184,8 @@ export default function Layout({ children }) {
           <ListItemIcon>
             <AccountBoxIcon fontSize="small" />
           </ListItemIcon>
-          {session?.user?.email}
-          <br /> ({session?.user?.role})
+          {user?.email}
+          <br /> ({user?.role})
         </MenuItem>
         <MenuItem onClick={() => router.push("/about")}>
           <ListItemIcon>

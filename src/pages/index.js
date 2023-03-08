@@ -1,11 +1,12 @@
 import { useState } from "react";
+import { authOptions } from "pages/api/auth/[...nextauth]";
+import { getServerSession } from "next-auth/next";
 
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import CardActions from "@mui/material/CardActions";
-
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -14,34 +15,33 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
-import MaterialLink from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import prisma from "utils/prisma";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 import CreateVmDialog from "components/createvmdialog";
 
-function createData(id, name, type, createdAt) {
-  return { id, name, type, createdAt };
-}
-
-const rows = [
-  createData("TGSPUUID1", "UUID", "Ubuntu 22.04 - Large", "2023-02-28 20:00"),
-  createData("TGSPUUID2", "UUID", "Minecraft", "2023-02-28 21:00"),
-];
-
 export async function getServerSideProps(context) {
+  const session = await getServerSession(context.req, context.res, authOptions);
+
   const templates = await prisma.VirtualServerTemplate.findMany();
   const servers = await prisma.VirtualServer.findMany({
-    where: { userId: "1" },
+    where: { userId: session.user.id },
+    select: {
+      id: true,
+      name: true,
+      virtualServerSize: true,
+      virtualServerTemplate: true,
+    },
   });
 
   return {
-    props: { templates },
+    props: { templates, servers },
   };
 }
 
-export default function Index({ user, templates }) {
+export default function Index({ user, templates, servers }) {
   const router = useRouter();
   const [openVmDialog, setOpenVmDialog] = useState(false);
 
@@ -117,24 +117,31 @@ export default function Index({ user, templates }) {
             <TableRow>
               <TableCell>Name</TableCell>
               <TableCell>Type</TableCell>
-              <TableCell>Created at</TableCell>
+              <TableCell>Size</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <TableRow
-                key={row.id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
+            {servers.map((row) => (
+              <TableRow key={row.id}>
                 <TableCell component="th" scope="row">
-                  <MaterialLink href={`/virtualserver/${row.id}`}>
+                  <Button
+                    href={`/vm/${row.id}`}
+                    LinkComponent={Link} // NextJS Link
+                  >
                     {row.name}
-                  </MaterialLink>
+                  </Button>
                 </TableCell>
-                <TableCell>{row.type}</TableCell>
-                <TableCell>{row.createdAt}</TableCell>
+                <TableCell>{row.virtualServerTemplate.name}</TableCell>
+                <TableCell>{row.virtualServerSize}</TableCell>
               </TableRow>
             ))}
+            {servers.length <= 0 && (
+              <TableRow>
+                <TableCell>You have no servers</TableCell>
+                <TableCell></TableCell>
+                <TableCell></TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </TableContainer>

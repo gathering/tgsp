@@ -22,7 +22,7 @@ export async function getServerSideProps(context) {
   };
 }
 
-export default function Index() {
+export default function GameIndex() {
   return (
     <>
       <Grid container spacing={5}>

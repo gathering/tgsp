@@ -12,6 +12,10 @@ const nextConfig = {
       client_token_url: process.env.CLIENT_TOKEN_URL,
       client_userinfo_url: process.env.CLIENT_USERINFO_URL,
     },
+    orc: {
+      url: process.env.ORC_API_URL,
+      token: process.env.ORC_API_TOKEN,
+    },
   },
   publicRuntimeConfig: {
     url: process.env.URL,

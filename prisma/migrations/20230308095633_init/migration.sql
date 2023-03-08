@@ -64,9 +64,12 @@ CREATE TABLE "virtual_server_template" (
 CREATE TABLE "virtual_server" (
     "id" SERIAL NOT NULL,
     "userId" TEXT NOT NULL,
+    "cost" INTEGER NOT NULL,
     "virtualServerTemplateId" INTEGER NOT NULL,
     "virtualServerSize" TEXT NOT NULL,
     "name" TEXT NOT NULL,
+    "username" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
     "orcId" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 

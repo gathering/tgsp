@@ -62,10 +62,10 @@ export default function Layout({ user, children }) {
                   textAlign: "center",
                 }}
               >
-                {user?.credits && (
+                {typeof user?.credits !== "undefined" && (
                   <Tooltip title={`You have ${user?.credits} credits`}>
                     <Badge
-                      badgeContent={user?.credits}
+                      badgeContent={`${user?.credits}`}
                       color={user?.credits >= 1 ? "success" : "warning"}
                     >
                       <TokenIcon />

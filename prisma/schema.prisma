@@ -84,9 +84,12 @@ model VirtualServerTemplate {
 model VirtualServer {
   id                      Int       @id @default(autoincrement())
   userId                  String
+  cost                    Int
   virtualServerTemplateId Int
   virtualServerSize       String
   name                    String
+  username                String
+  password                String
   orcId                   String?
   createdAt               DateTime  @default(now())
 

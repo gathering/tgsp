@@ -7,6 +7,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
 import Select from "@mui/material/Select";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -16,6 +17,8 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import { useTheme } from "@mui/material/styles";
+import getConfig from "next/config";
+import { useRouter } from "next/router";
 
 export default function CreateVmDialog({
   templates,
@@ -23,13 +26,37 @@ export default function CreateVmDialog({
   setOpenVmDialog,
   user,
 }) {
+  const router = useRouter();
+  const { publicRuntimeConfig } = getConfig();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const [vmConfig, setVmConfig] = useState({
     vm_template: "",
     vm_size: "",
+    terms: false,
   });
+
+  const createVm = async () => {
+    const response = await fetch(
+      `${publicRuntimeConfig.url}/api/virtualmachine/create`,
+      {
+        method: "POST",
+        credentials: "same-origin",
+        body: JSON.stringify(vmConfig),
+        headers: new Headers({
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        }),
+      }
+    );
+    const data = await response.json();
+    if (data.error) {
+      console.log(data);
+    } else {
+      router.push(`/vm/${data.id}`);
+    }
+  };
 
   const [selectedTemplate, setSelectedTemplate] = useState({});
   const [selectedSize, setSelectedSize] = useState({});
@@ -131,7 +158,16 @@ export default function CreateVmDialog({
             sx={{ mt: 2 }}
             control={<Checkbox />}
             label="I am accepting the conditions of using this service and that all data will be permanently deleted on Sunday April 9th, 2023 at 06:00"
+            checked={vmConfig.terms}
+            onChange={(e) => {
+              setVmConfig({ ...vmConfig, terms: e.target.checked });
+            }}
           />
+          <FormLabel sx={{ mt: 1 }} component="legend">
+            <Button href={"/about"} target="_blank" rel="noopener noreferrer">
+              Read the terms
+            </Button>
+          </FormLabel>
         </FormGroup>
       </DialogContent>
       <DialogActions>
@@ -149,9 +185,14 @@ export default function CreateVmDialog({
           color="success"
           variant="outlined"
           size="large"
-          disabled={true}
+          disabled={
+            vmConfig.vm_template === "" ||
+            vmConfig.vm_size === "" ||
+            vmConfig.terms !== true ||
+            user.credits - selectedSize.cost < 0
+          }
           onClick={() => {
-            setOpenVmDialog(false);
+            createVm();
           }}
         >
           Launch

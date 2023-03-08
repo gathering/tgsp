@@ -20,6 +20,7 @@ const nextConfig = {
   publicRuntimeConfig: {
     url: process.env.URL,
   },
+  output: "standalone",
 };
 
 module.exports = nextConfig;

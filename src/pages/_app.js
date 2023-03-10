@@ -65,6 +65,11 @@ App.propTypes = {
 };
 
 App.getInitialProps = async (appContext) => {
+  const cookieName =
+    process.env.NODE_ENV === "production"
+      ? "__Secure-next-auth.session-token"
+      : "next-auth.session-token";
+
   // Server Side
   if (appContext.ctx.req) {
     try {
@@ -72,7 +77,7 @@ App.getInitialProps = async (appContext) => {
         method: "GET",
         url: `${publicRuntimeConfig.url}/api/auth/user`,
         headers: {
-          Cookie: `next-auth.session-token=${appContext.ctx.req.cookies["next-auth.session-token"]}`,
+          Cookie: `${cookieName}=${appContext.ctx.req.cookies[cookieName]}`,
         },
       });
       return { user: response?.data?.user };

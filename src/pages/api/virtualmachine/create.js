@@ -95,7 +95,7 @@ export default async function handler(req, res) {
       data: {
         platform: template.platformId,
         network: template.networkId,
-        image: template.orcTemplateId,
+        template: template.orcTemplateId,
         name: server.name,
         memory: size.memory,
         cpu_cores: size.vcpu,
@@ -106,6 +106,14 @@ export default async function handler(req, res) {
           { key: "tgsp", value: "true" },
           { key: "tgsp_id", value: server.id },
         ],
+      },
+    });
+    await prisma.VirtualServer.update({
+      where: {
+        id: server.id,
+      },
+      data: {
+        orcId: response.data?.id,
       },
     });
     return res.json({

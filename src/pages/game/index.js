@@ -54,29 +54,6 @@ export default function GameIndex() {
             <CardMedia
               component="img"
               height="150"
-              image="https://media.wired.com/photos/62e0301fb014c7f5985e3405/4:3/w_1440,h_1080,c_limit/Minecraft-NFTs-Games.jpg"
-              alt="virtual server"
-            />
-            <CardContent>
-              <Typography gutterBottom variant="h4" component="div">
-                Minecraft Extra Mods
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                The classic game from Mojang with super duper mods!
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Button color="primary" variant="outlined">
-                Start
-              </Button>
-            </CardActions>
-          </Card>
-        </Grid>
-        <Grid item md={4}>
-          <Card>
-            <CardMedia
-              component="img"
-              height="150"
               image="https://cdn.cloudflare.steamstatic.com/steam/apps/892970/header.jpg?t=1676365340"
               alt="virtual server"
             />
@@ -85,7 +62,7 @@ export default function GameIndex() {
                 Valheim
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                Valheim is an upcoming survival and sandbox video game
+                Valheim is an survival and sandbox video game
               </Typography>
             </CardContent>
             <CardActions>
@@ -118,22 +95,31 @@ export default function GameIndex() {
             </CardActions>
           </Card>
         </Grid>
+        <Grid item md={4}>
+          <Card>
+            <CardMedia
+              component="img"
+              height="150"
+              image="https://staticctf.ubisoft.com/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/7A6P3TspEsvt1VP2aHjQRt/c3c411f53ea09ac4ecc4a925738f19c5/Header.jpg"
+              alt="virtual server"
+            />
+            <CardContent>
+              <Typography gutterBottom variant="h4" component="div">
+                Trackmania
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Experience the thrills of racing and the joy of creation with
+                Trackmania!
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Button color="primary" variant="outlined">
+                Start
+              </Button>
+            </CardActions>
+          </Card>
+        </Grid>
       </Grid>
-      <TableContainer component={Paper} sx={{ marginTop: 2 }}>
-        <Typography variant="h4" sx={{ marginLeft: 1, marginTop: 1 }}>
-          My Servers
-        </Typography>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Type</TableCell>
-              <TableCell>Created at</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody></TableBody>
-        </Table>
-      </TableContainer>
     </>
   );
 }

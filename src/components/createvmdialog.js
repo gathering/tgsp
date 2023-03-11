@@ -109,6 +109,12 @@ export default function CreateVmDialog({
                 </MenuItem>
               );
             })}
+            {templates.length <= 0 && (
+              <MenuItem disabled key="null" value="null">
+                There are currently no templates accessible at the moment.
+                Please try again later.
+              </MenuItem>
+            )}
           </Select>
         </FormControl>
         {vmConfig.vm_template !== "" && (

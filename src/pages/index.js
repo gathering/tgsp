@@ -108,43 +108,38 @@ export default function Index({ user, templates, servers }) {
           </Card>
         </Grid>
       </Grid>
-      <TableContainer component={Paper} sx={{ marginTop: 2 }}>
-        <Typography variant="h4" sx={{ marginLeft: 1, marginTop: 1 }}>
-          My Servers
-        </Typography>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Type</TableCell>
-              <TableCell>Size</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {servers.map((row) => (
-              <TableRow key={row.id}>
-                <TableCell component="th" scope="row">
-                  <Button
-                    href={`/vm/${row.id}`}
-                    LinkComponent={Link} // NextJS Link
-                  >
-                    {row.name}
-                  </Button>
-                </TableCell>
-                <TableCell>{row.virtualServerTemplate.name}</TableCell>
-                <TableCell>{row.virtualServerSize}</TableCell>
-              </TableRow>
-            ))}
-            {servers.length <= 0 && (
+      {servers.length >= 1 && (
+        <TableContainer component={Paper} sx={{ marginTop: 2 }}>
+          <Typography variant="h4" sx={{ marginLeft: 1, marginTop: 1 }}>
+            My Virtual Servers
+          </Typography>
+          <Table>
+            <TableHead>
               <TableRow>
-                <TableCell>You have no servers</TableCell>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
+                <TableCell>Name</TableCell>
+                <TableCell>Type</TableCell>
+                <TableCell>Size</TableCell>
               </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {servers.map((row) => (
+                <TableRow key={row.id}>
+                  <TableCell component="th" scope="row">
+                    <Button
+                      href={`/vm/${row.id}`}
+                      LinkComponent={Link} // NextJS Link
+                    >
+                      {row.name}
+                    </Button>
+                  </TableCell>
+                  <TableCell>{row.virtualServerTemplate.name}</TableCell>
+                  <TableCell>{row.virtualServerSize}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
       <CreateVmDialog
         user={user}
         templates={templates}

@@ -55,6 +55,15 @@ export default async function handler(req, res) {
     },
   });
 
+  const servers = await prisma.VirtualServer.aggregate({
+    _sum: {
+      cost: true,
+    },
+    where: {
+      userId: session.user.id,
+    },
+  });
+
   const template = await prisma.VirtualServerTemplate.findUniqueOrThrow({
     where: {
       id: body.vm_template,
@@ -62,6 +71,12 @@ export default async function handler(req, res) {
   });
 
   const size = template.sizes.find((x) => x.id === body.vm_size);
+
+  if (user.credits - servers["_sum"]["cost"] - size.cost <= 0) {
+    return res.status(400).json({
+      error: "No credits",
+    });
+  }
 
   const server = await prisma.VirtualServer.create({
     data: {
@@ -99,7 +114,7 @@ export default async function handler(req, res) {
         name: server.name,
         memory: size.memory,
         cpu_cores: size.vcpu,
-        os_disk: "60",
+        os_disk: size.disk ?? "60",
         userdata: userdata,
         tags: [
           { key: "owner", value: user.email },
@@ -137,7 +152,7 @@ export default async function handler(req, res) {
         { key: "tgsp_id", value: server.id },
       ],
     });
-    return res.json({
+    return res.status(500).json({
       error: "Failed to provision",
     });
   }

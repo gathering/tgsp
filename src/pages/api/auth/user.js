@@ -11,7 +11,7 @@ export default async function handler(req, res) {
     return;
   }
 
-  const user = await prisma.User.findUnique({
+  const user = await prisma.User.findUniqueOrThrow({
     where: {
       id: session.user.id,
     },

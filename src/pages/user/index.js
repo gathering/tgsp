@@ -9,7 +9,7 @@ export default function User({ user }) {
   return (
     <Grid container justifyContent="center" alignItems="center">
       <Grid item md={8}>
-        <Typography variant="h4">Account settings for {user.name}</Typography>
+        <Typography variant="h4">User Config</Typography>
         <Typography sx={{ mt: 2 }}>
           If no username is provided, the default username &quot;tg&quot; will
           be used for SSH access.

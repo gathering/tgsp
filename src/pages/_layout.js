@@ -22,6 +22,8 @@ import InfoIcon from "@mui/icons-material/Info";
 import MaterialLink from "@mui/material/Link";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import Alert from "@mui/material/Alert";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 export default function Layout({ user, children }) {
   const router = useRouter();
@@ -88,7 +90,14 @@ export default function Layout({ user, children }) {
             </Toolbar>
           </AppBar>
           <Container>
-            <Box sx={{ mt: 12 }}>{children}</Box>
+            <Alert sx={{ mt: 12 }} severity="info">
+              TGSP is only available through early access, and all servers will
+              be removed before TG.{" "}
+              <strong>
+                Please refrain from creating any content that cannot be deleted.
+              </strong>
+            </Alert>
+            <Box sx={{ mt: 2 }}>{children}</Box>
           </Container>
         </Fragment>
       </Grid>
@@ -186,6 +195,12 @@ export default function Layout({ user, children }) {
           </ListItemIcon>
           {user?.email}
           <br /> ({user?.role})
+        </MenuItem>
+        <MenuItem onClick={() => router.push("/user")}>
+          <ListItemIcon>
+            <SettingsIcon fontSize="small" />
+          </ListItemIcon>
+          User Settings
         </MenuItem>
         <MenuItem onClick={() => router.push("/about")}>
           <ListItemIcon>

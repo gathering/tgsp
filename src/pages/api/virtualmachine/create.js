@@ -72,7 +72,7 @@ export default async function handler(req, res) {
 
   const size = template.sizes.find((x) => x.id === body.vm_size);
 
-  if (user.credits - servers["_sum"]["cost"] - size.cost <= 0) {
+  if (user.credits - servers["_sum"]["cost"] - size.cost < 0) {
     return res.status(400).json({
       error: "No credits",
     });

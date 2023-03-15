@@ -142,7 +142,7 @@ export default function CreateVmDialog({
           </FormControl>
         )}
         {vmConfig.vm_size !== "" && (
-          <DialogContentText sx={{ mt: 2 }}>
+          <DialogContent sx={{ p: 0, pt: 2 }}>
             {user.credits - selectedSize.cost >= 0 && (
               <Alert severity="success">
                 This virtual machine will require {selectedSize.cost} out of{" "}
@@ -157,7 +157,7 @@ export default function CreateVmDialog({
                 choosing a smaller size or removing a server to free up credits.
               </Alert>
             )}
-          </DialogContentText>
+          </DialogContent>
         )}
         <FormGroup>
           <FormControlLabel

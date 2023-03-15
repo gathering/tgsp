@@ -94,7 +94,7 @@ export default function Index({ user, templates, servers }) {
                 Coming soon - stay tuned!
               </Typography>
             </CardContent>
-            <CardActions>
+            {/*             <CardActions>
               <Button
                 color="primary"
                 variant="outlined"
@@ -104,7 +104,7 @@ export default function Index({ user, templates, servers }) {
               >
                 See available games
               </Button>
-            </CardActions>
+            </CardActions> */}
           </Card>
         </Grid>
       </Grid>

@@ -2,7 +2,7 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import { Fragment, useState } from "react";
 import Image from "next/image";
-import { useSession, signOut } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -27,7 +27,6 @@ import SettingsIcon from "@mui/icons-material/Settings";
 
 export default function Layout({ user, children }) {
   const router = useRouter();
-  const { data: session } = useSession();
 
   const [anchorEl, setAnchorEl] = useState();
   const open = Boolean(anchorEl);

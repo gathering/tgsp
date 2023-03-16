@@ -20,7 +20,7 @@ export default function About() {
       </Typography>
       <Typography>
         By using our service, you agree to abide by the{" "}
-        <Link href="https://www.gathering.org/tg23/page/reglementTypography">
+        <Link href="https://www.gathering.org/tg23/page/reglement">
           regulations of the event
         </Link>{" "}
         and Norwegian law.

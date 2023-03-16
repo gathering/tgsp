@@ -5,12 +5,17 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import getConfig from "next/config";
 
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
+
 // ^ssh-[^\s]* AAAA[0-9A-Za-z+\/,]+ (.*)$
 
 export default function User({ user }) {
   const { publicRuntimeConfig } = getConfig();
   const [userData, setUserData] = useState(user);
   const [userError, setUserError] = useState({});
+  const [snackOpen, setSnackOpen] = useState(false);
 
   const updateUser = async () => {
     const response = await fetch(`${publicRuntimeConfig.url}/api/user/update`, {
@@ -26,7 +31,7 @@ export default function User({ user }) {
     if (data.error) {
       console.log(data);
     } else {
-      console.log("success");
+      setSnackOpen(true);
     }
   };
 
@@ -54,10 +59,18 @@ export default function User({ user }) {
     });
   };
 
+  const handleCloseSnack = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setSnackOpen(false);
+  };
+
   return (
     <Grid container justifyContent="center" alignItems="center">
       <Grid item md={8}>
-        <Typography variant="h4">User Config</Typography>
+        <Typography variant="h4">User</Typography>
         <Typography sx={{ mt: 2 }}>
           If no username is provided, the default username &quot;tg&quot; will
           be used for SSH access.
@@ -102,7 +115,8 @@ export default function User({ user }) {
           }
         />
         <Typography sx={{ mt: 2 }}>
-          Note: Changes done here will only apply on new servers.
+          Please note that any changes made here will only be applicable to new
+          servers.
         </Typography>
         <Button
           sx={{ mt: 1 }}
@@ -114,6 +128,20 @@ export default function User({ user }) {
           Save
         </Button>
       </Grid>
+      <Snackbar
+        open={snackOpen}
+        autoHideDuration={6000}
+        onClose={handleCloseSnack}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleCloseSnack}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          <AlertTitle>Success</AlertTitle>
+        </Alert>
+      </Snackbar>
     </Grid>
   );
 }

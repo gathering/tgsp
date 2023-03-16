@@ -84,21 +84,37 @@ export default async function handler(req, res) {
       virtualServerTemplateId: body.vm_template,
       virtualServerSize: body.vm_size,
       name: makehostname(),
-      username: "tg",
-      password: makepassword(),
+      username: user.default_username ?? "tg",
+      password: !user.authorized_keys ? makepassword() : null,
       cost: size.cost ?? 1,
     },
   });
 
-  const userdata = [
-    `useradd -s /usr/bin/bash -m -p $(openssl passwd -1 ${server.password}) ${server.username}`,
-    `usermod -aG sudo ${server.username}`,
-    "sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config",
-    `echo '${server.username} ALL=(ALL) NOPASSWD: ALL' | EDITOR='tee -a' visudo`,
-    `passwd --expire ${server.username}`,
-    "systemctl restart sshd",
-    "curl https://gist.githubusercontent.com/olemathias/ec008ef79aaae669beb298dfd99e644f/raw/a6ae39068aec0c41ce45faef8936140d9434db82/gistfile1.txt > /etc/motd",
-  ];
+  let userdata = [];
+
+  if (user.authorized_keys) {
+    userdata = [
+      `useradd -s /usr/bin/bash -m ${server.username}`,
+      `usermod -aG sudo ${server.username}`,
+      `echo '${server.username} ALL=(ALL) NOPASSWD: ALL' | EDITOR='tee -a' visudo`,
+      `mkdir home/${server.username}/.ssh`,
+      `echo '${user.authorized_keys}' > /home/${server.username}/.ssh/authorized_keys`,
+      `chown ${server.username}:${server.username} -R /home/${server.username}/.ssh`,
+      `chmod 700 /home/${server.username}/.ssh`,
+      `chmod 600 /home/${server.username}/.ssh/authorized_keys`,
+      "curl https://gist.githubusercontent.com/olemathias/ec008ef79aaae669beb298dfd99e644f/raw/a6ae39068aec0c41ce45faef8936140d9434db82/gistfile1.txt > /etc/motd",
+    ];
+  } else {
+    userdata = [
+      `useradd -s /usr/bin/bash -m -p $(openssl passwd -1 ${server.password}) ${server.username}`,
+      `usermod -aG sudo ${server.username}`,
+      "sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config",
+      `echo '${server.username} ALL=(ALL) NOPASSWD: ALL' | EDITOR='tee -a' visudo`,
+      `passwd --expire ${server.username}`,
+      "systemctl restart sshd",
+      "curl https://gist.githubusercontent.com/olemathias/ec008ef79aaae669beb298dfd99e644f/raw/a6ae39068aec0c41ce45faef8936140d9434db82/gistfile1.txt > /etc/motd",
+    ];
+  }
 
   try {
     const response = await axios({
@@ -112,14 +128,15 @@ export default async function handler(req, res) {
         network: template.networkId,
         template: template.orcTemplateId,
         name: server.name,
-        memory: size.memory,
-        cpu_cores: size.vcpu,
-        os_disk: size.disk ?? "60",
+        memory: size.memory ?? 2,
+        cpu_cores: size.vcpu ?? 1,
+        os_disk: size.disk ?? "30",
         userdata: userdata,
         tags: [
           { key: "owner", value: user.email },
           { key: "tgsp", value: "true" },
           { key: "tgsp_id", value: server.id },
+          { key: "user_role", value: user.role },
         ],
       },
     });

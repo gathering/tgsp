@@ -53,6 +53,7 @@ model User {
   credits          Int?       @default(4)
   default_username String?
   authorized_keys  String?    @db.Text
+  admin            Boolean    @default(false)
 
   accounts      Account[]
   sessions      Session[]
@@ -91,7 +92,7 @@ model VirtualServer {
   virtualServerSize       String
   name                    String
   username                String
-  password                String
+  password                String?
   orcId                   String?
   createdAt               DateTime  @default(now())
 

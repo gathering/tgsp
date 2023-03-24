@@ -76,14 +76,15 @@ export default function CreateVmDialog({
           To get started, simply choose a size and template that best fits your
           needs.
         </DialogContentText>
+        {!user?.authorized_keys && (
+          <DialogContentText sx={{ pt: 1 }}>
+            Upon creating the instance, you will receive a username and password
+            to access it. You can modify the password at any time to ensure the
+            security of your account.
+          </DialogContentText>
+        )}
         <DialogContentText sx={{ pt: 1 }}>
-          Upon creating the instance, you will receive a username and password
-          to access it. You can modify the password at any time to ensure the
-          security of your account.
-        </DialogContentText>
-        <DialogContentText sx={{ pt: 1 }}>
-          All Virtual Machines receive both public IPv4 and IPv6 addresses, as
-          well as 60 GB of SSD storage.
+          All Virtual Machines receive both public IPv4 and IPv6 addresses.
         </DialogContentText>
         <FormControl fullWidth sx={{ mt: 3 }}>
           <InputLabel>VM Template</InputLabel>

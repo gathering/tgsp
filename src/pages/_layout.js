@@ -107,7 +107,11 @@ export default function Layout({ user, children }) {
           alignItems="center"
           justifyContent="center"
         >
-          <Stack direction="row" spacing={12} sx={{ paddingTop: 5 }}>
+          <Stack
+            direction={{ sm: "column", md: "row" }}
+            spacing={12}
+            sx={{ paddingTop: 5 }}
+          >
             <Link href="https://www.nlogic.no/">
               <Image
                 src="https://tech.gathering.org/wp-content/themes/technical-blog-wordpress-main/static/img/partners/nlogic.svg"

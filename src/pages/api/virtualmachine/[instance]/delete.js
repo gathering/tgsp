@@ -42,7 +42,7 @@ export default async function handler(req, res) {
   try {
     const response = await axios({
       method: "DELETE",
-      url: `${serverRuntimeConfig.orc.url}/instance/${server.orcId}`,
+      url: `${serverRuntimeConfig.orc.url}/instance/${server.orcId}/`,
       headers: {
         Authorization: `Token ${serverRuntimeConfig.orc.token}`,
       },
@@ -56,6 +56,7 @@ export default async function handler(req, res) {
       status: response.data?.status,
     });
   } catch (e) {
+    console.log(e);
     console.log(e.response?.data);
     return res
       .status(500)

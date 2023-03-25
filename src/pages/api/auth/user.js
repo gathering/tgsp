@@ -26,7 +26,17 @@ export default async function handler(req, res) {
     },
   });
 
-  user.credits = user.credits - servers["_sum"]["cost"];
+  const game_servers = await prisma.GameServer.aggregate({
+    _sum: {
+      cost: true,
+    },
+    where: {
+      userId: session.user.id,
+    },
+  });
+
+  user.credits =
+    user.credits - servers["_sum"]["cost"] - game_servers["_sum"]["cost"];
 
   return res.json({
     user,

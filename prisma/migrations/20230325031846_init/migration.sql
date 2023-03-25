@@ -37,6 +37,10 @@ CREATE TABLE "user" (
     "emailVerified" TIMESTAMP(3),
     "image" TEXT,
     "credits" INTEGER DEFAULT 4,
+    "default_username" TEXT,
+    "authorized_keys" TEXT,
+    "admin" BOOLEAN NOT NULL DEFAULT false,
+    "pterodactyl_id" INTEGER,
 
     CONSTRAINT "user_pkey" PRIMARY KEY ("id")
 );
@@ -69,11 +73,55 @@ CREATE TABLE "virtual_server" (
     "virtualServerSize" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "username" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
+    "password" TEXT,
     "orcId" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "virtual_server_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "game" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "img" TEXT NOT NULL,
+    "description" TEXT,
+    "enabled" BOOLEAN NOT NULL DEFAULT false,
+
+    CONSTRAINT "game_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "game_server_template" (
+    "id" SERIAL NOT NULL,
+    "gameId" INTEGER NOT NULL,
+    "name" TEXT NOT NULL,
+    "description" TEXT,
+    "enabled" BOOLEAN NOT NULL DEFAULT false,
+    "cost" INTEGER NOT NULL,
+    "egg" INTEGER NOT NULL,
+    "limits" JSONB NOT NULL,
+    "feature_limits" JSONB NOT NULL,
+    "allocation" JSONB NOT NULL,
+    "environment" JSONB NOT NULL,
+    "deploy" JSONB NOT NULL,
+    "docker_image" TEXT,
+    "startup" TEXT,
+
+    CONSTRAINT "game_server_template_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "game_server" (
+    "id" SERIAL NOT NULL,
+    "userId" TEXT NOT NULL,
+    "cost" INTEGER NOT NULL,
+    "gameServerTemplateId" INTEGER NOT NULL,
+    "name" TEXT NOT NULL,
+    "pterodactyl_id" INTEGER,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "game_server_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -102,3 +150,12 @@ ALTER TABLE "virtual_server" ADD CONSTRAINT "virtual_server_userId_fkey" FOREIGN
 
 -- AddForeignKey
 ALTER TABLE "virtual_server" ADD CONSTRAINT "virtual_server_virtualServerTemplateId_fkey" FOREIGN KEY ("virtualServerTemplateId") REFERENCES "virtual_server_template"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "game_server_template" ADD CONSTRAINT "game_server_template_gameId_fkey" FOREIGN KEY ("gameId") REFERENCES "game"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "game_server" ADD CONSTRAINT "game_server_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "game_server" ADD CONSTRAINT "game_server_gameServerTemplateId_fkey" FOREIGN KEY ("gameServerTemplateId") REFERENCES "game_server_template"("id") ON DELETE CASCADE ON UPDATE CASCADE;

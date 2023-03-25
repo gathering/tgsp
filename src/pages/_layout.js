@@ -89,14 +89,7 @@ export default function Layout({ user, children }) {
             </Toolbar>
           </AppBar>
           <Container>
-            <Alert sx={{ mt: 12 }} severity="info">
-              TGSP is only available through early access, and all servers will
-              be removed before TG.{" "}
-              <strong>
-                Please refrain from creating any content that cannot be deleted.
-              </strong>
-            </Alert>
-            <Box sx={{ mt: 2 }}>{children}</Box>
+            <Box sx={{ mt: 10 }}>{children}</Box>
           </Container>
         </Fragment>
       </Grid>

@@ -11,19 +11,19 @@ generator client {
 }
 
 model Account {
-  id                  String   @id @default(cuid())
-  userId              String
-  type                String
-  provider            String
-  providerAccountId   String
-  refresh_token       String?  @db.Text
-  access_token        String?  @db.Text
-  expires_at          Int?
-  refresh_expires_in  Int?
-  token_type          String?
-  scope               String?
-  id_token            String?  @db.Text
-  session_state       String?
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String? @db.Text
+  access_token       String? @db.Text
+  expires_at         Int?
+  refresh_expires_in Int?
+  token_type         String?
+  scope              String?
+  id_token           String? @db.Text
+  session_state      String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -32,39 +32,41 @@ model Account {
 }
 
 model Session {
-  id           String    @id @default(cuid())
-  sessionToken String    @unique
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
   userId       String
   expires      DateTime
 
-  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("session")
 }
 
 model User {
-  id               String     @id @default(cuid())
-  name             String?
-  username         String?
-  role             String?
-  email            String?    @unique
-  emailVerified    DateTime?
-  image            String?
-  credits          Int?       @default(4)
-  default_username String?
-  authorized_keys  String?    @db.Text
-  admin            Boolean    @default(false)
+  id                    String    @id @default(cuid())
+  name                  String?
+  username              String?
+  role                  String?
+  email                 String?   @unique
+  emailVerified         DateTime?
+  image                 String?
+  credits               Int?      @default(4)
+  default_username      String?
+  authorized_keys       String?   @db.Text
+  admin                 Boolean   @default(false)
+  pterodactyl_id        Int?
 
-  accounts      Account[]
-  sessions      Session[]
-  virtualServers VirtualServer[]
+  accounts        Account[]
+  sessions        Session[]
+  virtualServers  VirtualServer[]
+  gameServers     GameServer[]
 
   @@map("user")
 }
 
 model VerificationToken {
   identifier String
-  token      String    @unique
+  token      String   @unique
   expires    DateTime
 
   @@unique([identifier, token])
@@ -72,7 +74,7 @@ model VerificationToken {
 }
 
 model VirtualServerTemplate {
-  id            Int     @id @default(autoincrement())
+  id            Int    @id @default(autoincrement())
   name          String
   platformId    String
   networkId     String
@@ -85,7 +87,7 @@ model VirtualServerTemplate {
 }
 
 model VirtualServer {
-  id                      Int       @id @default(autoincrement())
+  id                      Int      @id @default(autoincrement())
   userId                  String
   cost                    Int
   virtualServerTemplateId Int
@@ -94,10 +96,61 @@ model VirtualServer {
   username                String
   password                String?
   orcId                   String?
-  createdAt               DateTime  @default(now())
+  createdAt               DateTime @default(now())
 
-  user                   User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  virtualServerTemplate  VirtualServerTemplate @relation(fields: [virtualServerTemplateId], references: [id], onDelete: Cascade)
+  user                  User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  virtualServerTemplate VirtualServerTemplate @relation(fields: [virtualServerTemplateId], references: [id], onDelete: Cascade)
 
   @@map("virtual_server")
+}
+
+model Game {
+  id          Int     @id @default(autoincrement())
+  name        String
+  img         String
+  description String? @db.Text
+  enabled     Boolean @default(false)
+
+  gameServerTemplates  GameServerTemplate[]
+  
+  @@map("game")
+}
+
+model GameServerTemplate {
+  id          Int     @id @default(autoincrement())
+  gameId      Int
+  name        String
+  description String? @db.Text
+  enabled     Boolean @default(false)
+  cost        Int
+
+  egg            Int
+  limits         Json
+  feature_limits Json
+  allocation     Json
+  environment    Json
+  deploy         Json
+  docker_image   String?
+  startup        String?
+
+  game           Game         @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  gameServers    GameServer[]
+
+  @@map("game_server_template")
+}
+
+model GameServer {
+  id                   Int    @id @default(autoincrement())
+  userId               String
+  cost                 Int
+  gameServerTemplateId Int
+
+  name           String
+  pterodactyl_id Int?
+  createdAt      DateTime @default(now())
+
+  user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  gameServerTemplate GameServerTemplate @relation(fields: [gameServerTemplateId], references: [id], onDelete: Cascade)
+
+  @@map("game_server")
 }

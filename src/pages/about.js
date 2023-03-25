@@ -10,7 +10,7 @@ export default function About() {
         manage servers during The Gathering.
       </Typography>
       <Typography>
-        Every participant will receive 8 credits, which can be used to launch
+        Every participant will receive 4 credits, which can be used to launch
         your own custom virtual machines or gaming servers. Whether you&apos;re
         looking to test out new software, build your own game environment, or
         simply have fun playing around with Linux.

@@ -19,8 +19,10 @@ import Grid from "@mui/material/Grid";
 import prisma from "utils/prisma";
 import { useRouter } from "next/router";
 import Link from "next/link";
-
 import CreateVmDialog from "components/createvmdialog";
+
+import getConfig from "next/config";
+const { publicRuntimeConfig } = getConfig();
 
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);
@@ -65,17 +67,19 @@ export default function Index({ user, templates, servers }) {
                 service!
               </Typography>
             </CardContent>
-            <CardActions>
-              <Button
-                color="primary"
-                variant="outlined"
-                onClick={() => {
-                  setOpenVmDialog(true);
-                }}
-              >
-                Launch new
-              </Button>
-            </CardActions>
+            {publicRuntimeConfig?.vm_enabled === "true" && (
+              <CardActions>
+                <Button
+                  color="primary"
+                  variant="outlined"
+                  onClick={() => {
+                    setOpenVmDialog(true);
+                  }}
+                >
+                  Launch new
+                </Button>
+              </CardActions>
+            )}
           </Card>
         </Grid>
         <Grid item md={6}>
@@ -94,17 +98,19 @@ export default function Index({ user, templates, servers }) {
                 Coming soon - stay tuned!
               </Typography>
             </CardContent>
-            {/*             <CardActions>
-              <Button
-                color="primary"
-                variant="outlined"
-                onClick={() => {
-                  router.push("/game");
-                }}
-              >
-                See available games
-              </Button>
-            </CardActions> */}
+            {publicRuntimeConfig?.game_enabled === "true" && (
+              <CardActions>
+                <Button
+                  color="primary"
+                  variant="outlined"
+                  onClick={() => {
+                    router.push("/game");
+                  }}
+                >
+                  See available games
+                </Button>
+              </CardActions>
+            )}
           </Card>
         </Grid>
       </Grid>

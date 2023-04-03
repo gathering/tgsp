@@ -98,7 +98,11 @@ const deleteVm = async (server_id, router) => {
 
 export default function ShowVm({ error, server, orcInstance }) {
   const router = useRouter();
-  console.log(orcInstance);
+
+  const refreshData = () => {
+    router.replace(router.asPath);
+  };
+
   return (
     <Grid container justifyContent="center" alignItems="center">
       <Grid item md={10}>
@@ -127,28 +131,32 @@ export default function ShowVm({ error, server, orcInstance }) {
         >
           <Table>
             <TableBody>
-              <TableRow>
-                <StyledTableCell>Server Name</StyledTableCell>
-                <StyledTableCell>
-                  {server.name}.tg23.gathering.org
-                </StyledTableCell>
-              </TableRow>
-              <TableRow>
-                <StyledTableCell>Username</StyledTableCell>
-                <StyledTableCell>{server.username}</StyledTableCell>
-              </TableRow>
-              <TableRow>
-                <StyledTableCell>Default password</StyledTableCell>
-                <StyledTableCell>{server.password}</StyledTableCell>
-              </TableRow>
-              <TableRow>
-                <StyledTableCell>IPv4</StyledTableCell>
-                <StyledTableCell>{orcInstance.ipv4}</StyledTableCell>
-              </TableRow>
-              <TableRow>
-                <StyledTableCell>IPv6</StyledTableCell>
-                <StyledTableCell>{orcInstance.ipv6}</StyledTableCell>
-              </TableRow>
+              {orcInstance.status === "provisioned" && (
+                <>
+                  <TableRow>
+                    <StyledTableCell>Server Name</StyledTableCell>
+                    <StyledTableCell>
+                      {server.name}.tg23.gathering.org
+                    </StyledTableCell>
+                  </TableRow>
+                  <TableRow>
+                    <StyledTableCell>Username</StyledTableCell>
+                    <StyledTableCell>{server.username}</StyledTableCell>
+                  </TableRow>
+                  <TableRow>
+                    <StyledTableCell>Default password</StyledTableCell>
+                    <StyledTableCell>{server.password}</StyledTableCell>
+                  </TableRow>
+                  <TableRow>
+                    <StyledTableCell>IPv4</StyledTableCell>
+                    <StyledTableCell>{orcInstance.ipv4}</StyledTableCell>
+                  </TableRow>
+                  <TableRow>
+                    <StyledTableCell>IPv6</StyledTableCell>
+                    <StyledTableCell>{orcInstance.ipv6}</StyledTableCell>
+                  </TableRow>
+                </>
+              )}
               <TableRow>
                 <StyledTableCell>Template</StyledTableCell>
                 <StyledTableCell>

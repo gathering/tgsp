@@ -108,15 +108,17 @@ export default function ShowVm({ error, server, orcInstance }) {
       <Grid item md={10}>
         <Typography variant="h4">
           My Virtual Server
-          <ButtonGroup size="small" variant="contained" sx={{ ml: 2, mb: 1 }}>
-            <Button
-              onClick={() => {
-                deleteVm(server.id, router);
-              }}
-            >
-              Delete
-            </Button>
-          </ButtonGroup>
+          {orcInstance.status === "provisioned" && (
+            <ButtonGroup size="small" variant="contained" sx={{ ml: 2, mb: 1 }}>
+              <Button
+                onClick={() => {
+                  deleteVm(server.id, router);
+                }}
+              >
+                Delete
+              </Button>
+            </ButtonGroup>
+          )}
         </Typography>
         <Typography variant="body1">
           Below, you will find the hostname and login credentials that you need

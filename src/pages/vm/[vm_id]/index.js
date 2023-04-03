@@ -56,6 +56,7 @@ export async function getServerSideProps(context) {
     props: {
       server,
       orcInstance: {
+        status: orcInstance.data?.vm_provider_state?.status ?? null,
         ipv4: orcInstance.data.ipam_provider_state?.ip_addresses[0]?.address.replace(
           /\/([0-9]{1,3})$/gi,
           ""
@@ -97,13 +98,13 @@ const deleteVm = async (server_id, router) => {
 
 export default function ShowVm({ error, server, orcInstance }) {
   const router = useRouter();
+  console.log(orcInstance);
   return (
     <Grid container justifyContent="center" alignItems="center">
       <Grid item md={10}>
         <Typography variant="h4">
           My Virtual Server
           <ButtonGroup size="small" variant="contained" sx={{ ml: 2, mb: 1 }}>
-            <Button>Reboot</Button>
             <Button
               onClick={() => {
                 deleteVm(server.id, router);
@@ -116,8 +117,6 @@ export default function ShowVm({ error, server, orcInstance }) {
         <Typography variant="body1">
           Below, you will find the hostname and login credentials that you need
           to connect to the server. <br />
-          You must be connected to The Gathering&apos;s network for SSH to work.
-          <br />
           Please note that the password provided is temporary and must be
           changed on your first login.
         </Typography>
@@ -153,14 +152,24 @@ export default function ShowVm({ error, server, orcInstance }) {
               <TableRow>
                 <StyledTableCell>Template</StyledTableCell>
                 <StyledTableCell>
-                  {server.virtualServerTemplate.name} -{" "}
+                  {server.virtualServerTemplate.name} {"- "}
                   {server.virtualServerSize}
                 </StyledTableCell>
               </TableRow>
               <TableRow>
                 <StyledTableCell>Status</StyledTableCell>
                 <StyledTableCell>
-                  <Chip sx={{ mr: 1 }} label="Online" color="success" />
+                  <Chip
+                    sx={{ mr: 1 }}
+                    label={
+                      orcInstance.status === "provisioned"
+                        ? "Online"
+                        : "Starting"
+                    }
+                    color={
+                      orcInstance.status === "provisioned" ? "success" : "info"
+                    }
+                  />
                 </StyledTableCell>
               </TableRow>
             </TableBody>

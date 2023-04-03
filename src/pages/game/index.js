@@ -10,6 +10,10 @@ import Alert from "@mui/material/Alert";
 import prisma from "utils/prisma";
 import { useRouter } from "next/router";
 import CreatePterodactylUserDialog from "components/createpterodactyluserdialog";
+import ButtonGroup from "@mui/material/ButtonGroup";
+import getConfig from "next/config";
+
+const { publicRuntimeConfig } = getConfig();
 
 export async function getServerSideProps(context) {
   const games = await prisma.Game.findMany();
@@ -41,6 +45,16 @@ export default function GameIndex({ user, games }) {
       )}
       <Typography gutterBottom variant="h2">
         Games
+        {user.pterodactyl_id && (
+          <ButtonGroup variant="contained" sx={{ ml: 2 }}>
+            <Button
+              href={publicRuntimeConfig.pterodactyl.url}
+              color="secondary"
+            >
+              Panel
+            </Button>
+          </ButtonGroup>
+        )}
       </Typography>
       <Grid container spacing={5}>
         {games.map((row) => (

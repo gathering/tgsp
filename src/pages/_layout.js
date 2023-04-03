@@ -93,7 +93,7 @@ export default function Layout({ user, children }) {
           </Container>
         </Fragment>
       </Grid>
-      <Box component="footer">
+      <Box component="footer" style={{ marginBottom: "1rem" }}>
         <Grid
           container
           direction="column"

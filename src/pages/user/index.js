@@ -52,10 +52,11 @@ export default function User({ user }) {
       return;
     }
     // ^ssh-[^\s]* AAAA[0-9A-Za-z+\/,]+ (.*)$
-    const regex = new RegExp("^ssh-[^s]* AAAA[0-9A-Za-z+/,]+ (.*)$", "m");
+    //const regex = new RegExp("^ssh-[^s]* AAAA[0-9A-Za-z+/,]+", "m");
     setUserError({
       ...userError,
-      authorized_keys: !regex.test(authorized_keys),
+      //authorized_keys: !regex.test(authorized_keys),
+      authorized_keys: false,
     });
   };
 

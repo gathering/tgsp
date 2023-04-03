@@ -145,10 +145,12 @@ export default function ShowVm({ error, server, orcInstance }) {
                     <StyledTableCell>Username</StyledTableCell>
                     <StyledTableCell>{server.username}</StyledTableCell>
                   </TableRow>
-                  <TableRow>
-                    <StyledTableCell>Default password</StyledTableCell>
-                    <StyledTableCell>{server.password}</StyledTableCell>
-                  </TableRow>
+                  {server.password && (
+                    <TableRow>
+                      <StyledTableCell>Default password</StyledTableCell>
+                      <StyledTableCell>{server.password}</StyledTableCell>
+                    </TableRow>
+                  )}
                   <TableRow>
                     <StyledTableCell>IPv4</StyledTableCell>
                     <StyledTableCell>{orcInstance.ipv4}</StyledTableCell>

@@ -133,7 +133,7 @@ export default function ShowVm({ error, server, orcInstance }) {
             </ButtonGroup>
           )}
         </Typography>
-        {server.password(
+        {server.password && (
           <Typography variant="body1">
             Below, you will find the hostname and login credentials that you
             need to connect to the server. <br />

@@ -15,6 +15,8 @@ import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Chip from "@mui/material/Chip";
 import Paper from "@mui/material/Paper";
+import LinearProgress from "@mui/material/LinearProgress";
+import CachedIcon from "@mui/icons-material/Cached";
 import getConfig from "next/config";
 import { useRouter } from "next/router";
 
@@ -126,7 +128,7 @@ export default function ShowVm({ error, server, orcInstance }) {
                   refreshData();
                 }}
               >
-                Refresh
+                Refresh <CachedIcon />
               </Button>
             </ButtonGroup>
           )}
@@ -189,32 +191,49 @@ export default function ShowVm({ error, server, orcInstance }) {
               </TableRow>
               <TableRow>
                 <StyledTableCell>Status</StyledTableCell>
-                <StyledTableCell>
-                  <Chip
-                    sx={{ mr: 1 }}
-                    label={
-                      orcInstance.status === "provisioned"
-                        ? "Online"
-                        : "Starting, please wait"
-                    }
-                    color={
-                      orcInstance.status === "provisioned" ? "success" : "info"
-                    }
-                  />
-                </StyledTableCell>
+                {orcInstance.status === "provisioned" && (
+                  <StyledTableCell>
+                    <Chip
+                      sx={{ mr: 1 }}
+                      label={"Online"}
+                      color={
+                        orcInstance.status === "provisioned"
+                          ? "success"
+                          : "info"
+                      }
+                    />
+                  </StyledTableCell>
+                )}
+                {orcInstance.status !== "provisioned" && (
+                  <StyledTableCell>
+                    Starting, please wait...
+                    <br /> <br />
+                    <LinearProgress />
+                  </StyledTableCell>
+                )}
               </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
-        <Typography variant="body1">
-          In order to connect to the server using SSH, you will need an SSH
-          client. If you are using Windows as your operating system, PuTTY is a
-          popular SSH client that you can use.
-          <br /> <br />
-          To connect to the server using SSH on Linux or Mac, you don&apos;t
-          need to install any additional software as SSH is built-in to these
-          operating systems.
-        </Typography>
+        {orcInstance.status !== "provisioned" && (
+          <Typography variant="body1">
+            If the server remains stuck in the starting phase for more than 15
+            minutes, please feel free to contact a member of the tech crew on
+            The Gathering Discord server for assistance.
+            <br /> <br />
+          </Typography>
+        )}
+        {orcInstance.status === "provisioned" && (
+          <Typography variant="body1">
+            In order to connect to the server using SSH, you will need an SSH
+            client. If you are using Windows as your operating system, PuTTY is
+            a popular SSH client that you can use.
+            <br /> <br />
+            To connect to the server using SSH on Linux or Mac, you don&apos;t
+            need to install any additional software as SSH is built-in to these
+            operating systems.
+          </Typography>
+        )}
       </Grid>
     </Grid>
   );

@@ -133,7 +133,7 @@ export default function ShowVm({ error, server, orcInstance }) {
             </ButtonGroup>
           )}
         </Typography>
-        {orcInstance.password != null && (
+        {server.password(
           <Typography variant="body1">
             Below, you will find the hostname and login credentials that you
             need to connect to the server. <br />
@@ -141,7 +141,7 @@ export default function ShowVm({ error, server, orcInstance }) {
             changed on your first login.
           </Typography>
         )}
-        {orcInstance.password == null && (
+        {!server.password && (
           <Typography variant="body1">
             The password for this server is not generated as it has been
             configured with a user-provided SSH key.

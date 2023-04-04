@@ -107,7 +107,7 @@ export default function ShowVm({ error, server, orcInstance }) {
     <Grid container justifyContent="center" alignItems="center">
       <Grid item md={10}>
         <Typography variant="h4">
-          My Virtual Server
+          Virtual Server
           {orcInstance.status === "provisioned" && (
             <ButtonGroup size="small" variant="contained" sx={{ ml: 2, mb: 1 }}>
               <Button
@@ -119,13 +119,32 @@ export default function ShowVm({ error, server, orcInstance }) {
               </Button>
             </ButtonGroup>
           )}
+          {orcInstance.status !== "provisioned" && (
+            <ButtonGroup size="small" variant="contained" sx={{ ml: 2, mb: 1 }}>
+              <Button
+                onClick={() => {
+                  refreshData();
+                }}
+              >
+                Refresh
+              </Button>
+            </ButtonGroup>
+          )}
         </Typography>
-        <Typography variant="body1">
-          Below, you will find the hostname and login credentials that you need
-          to connect to the server. <br />
-          Please note that the password provided is temporary and must be
-          changed on your first login.
-        </Typography>
+        {orcInstance.password != null && (
+          <Typography variant="body1">
+            Below, you will find the hostname and login credentials that you
+            need to connect to the server. <br />
+            Please note that the password provided is temporary and must be
+            changed on your first login.
+          </Typography>
+        )}
+        {orcInstance.password == null && (
+          <Typography variant="body1">
+            The password for this server is not generated as it has been
+            configured with a user-provided SSH key.
+          </Typography>
+        )}
 
         <TableContainer
           component={Paper}
@@ -176,7 +195,7 @@ export default function ShowVm({ error, server, orcInstance }) {
                     label={
                       orcInstance.status === "provisioned"
                         ? "Online"
-                        : "Starting"
+                        : "Starting, please wait"
                     }
                     color={
                       orcInstance.status === "provisioned" ? "success" : "info"

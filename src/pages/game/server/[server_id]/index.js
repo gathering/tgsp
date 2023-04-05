@@ -40,6 +40,7 @@ export async function getServerSideProps(context) {
       name: true,
       gameServerTemplate: true,
       pterodactyl_id: true,
+      gameServerTemplate: true,
     },
   });
 
@@ -57,7 +58,11 @@ export async function getServerSideProps(context) {
   const pterodactyl_server = await client.getServerDetails(
     pterodactyl_app_server.uuid
   );
-  const status = await client.getServerStatus(pterodactyl_app_server.uuid);
+
+  let status = pterodactyl_server.status;
+  if (pterodactyl_server.status !== "installing") {
+    status = await client.getServerStatus(pterodactyl_app_server.uuid);
+  }
 
   return {
     props: {
@@ -74,6 +79,26 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
+const deleteServer = async (server_id, router) => {
+  const response = await fetch(
+    `${publicRuntimeConfig.url}/api/game/${server_id}/delete`,
+    {
+      method: "DELETE",
+      credentials: "same-origin",
+      headers: new Headers({
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      }),
+    }
+  );
+  const data = await response.json();
+  if (data.error) {
+    console.log(data);
+  } else {
+    router.push(`/`);
+  }
+};
+
 export default function ShowGameServer({ server, pterodactyl_server, status }) {
   const router = useRouter();
   const default_allocation =
@@ -85,7 +110,7 @@ export default function ShowGameServer({ server, pterodactyl_server, status }) {
     <Grid container justifyContent="center" alignItems="center">
       <Grid item md={10}>
         <Typography variant="h4">
-          My Game Server
+          My {server.gameServerTemplate.name} Server
           <ButtonGroup size="small" variant="contained" sx={{ ml: 2, mb: 1 }}>
             <Button
               href={publicRuntimeConfig.pterodactyl.url}

@@ -113,12 +113,7 @@ export default function ShowGameServer({ server, pterodactyl_server, status }) {
           My {server.gameServerTemplate.name} Server
           <ButtonGroup size="small" variant="contained" sx={{ ml: 2, mb: 1 }}>
             <Button
-              href={publicRuntimeConfig.pterodactyl.url}
-              color="secondary"
-            >
-              Panel
-            </Button>
-            <Button
+              sx={{ ml: 2 }}
               onClick={() => {
                 deleteServer(server.id, router);
               }}
@@ -150,6 +145,18 @@ export default function ShowGameServer({ server, pterodactyl_server, status }) {
             </TableBody>
           </Table>
         </TableContainer>
+        <Button
+          sx={{ m: 2 }}
+          href={publicRuntimeConfig.pterodactyl.url}
+          variant="contained"
+          color="secondary"
+        >
+          Manage Server
+        </Button>
+        <Typography variant="body1">
+          To manage and modify your server, please log in to the control panel
+          using the button above.
+        </Typography>
       </Grid>
     </Grid>
   );

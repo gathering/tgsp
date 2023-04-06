@@ -1,6 +1,7 @@
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -94,11 +95,30 @@ export default function GameShow({ user, game }) {
                   Cost: {row.cost} credits
                 </Typography>
               </CardContent>
+              <CardContent>
+                {user.credits - row.cost >= 0 && (
+                  <Alert severity="success">
+                    This virtual machine will require {row.cost} out of{" "}
+                    {user.credits} available credits.
+                  </Alert>
+                )}
+                {user.credits - row.cost < 0 && (
+                  <Alert severity="error">
+                    <AlertTitle>Insufficient credits available</AlertTitle>
+                    The selected game requires {row.cost} credits, which is more
+                    than the available {user.credits} credits. Please consider
+                    choosing a smaller size or removing a server to free up
+                    credits.
+                  </Alert>
+                )}
+              </CardContent>
               <CardActions sx={{ pb: 2 }}>
                 <Button
                   color="primary"
                   variant="outlined"
-                  disabled={user.pterodactyl_id ? false : true}
+                  disabled={
+                    user.pterodactyl_id && user.credits >= 1 ? false : true
+                  }
                   onClick={() => createServer(row.id)}
                 >
                   Start

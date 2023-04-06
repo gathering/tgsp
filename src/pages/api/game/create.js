@@ -47,11 +47,41 @@ export default async function handler(req, res) {
     },
   });
 
+  const servers = await prisma.VirtualServer.aggregate({
+    _sum: {
+      cost: true,
+    },
+    where: {
+      userId: session.user.id,
+    },
+  });
+
+  const game_servers = await prisma.GameServer.aggregate({
+    _sum: {
+      cost: true,
+    },
+    where: {
+      userId: session.user.id,
+    },
+  });
+
   const template = await prisma.GameServerTemplate.findUniqueOrThrow({
     where: {
       id: body.template,
     },
   });
+
+  if (
+    user.credits -
+      servers["_sum"]["cost"] -
+      game_servers["_sum"]["cost"] -
+      template.cost <
+    0
+  ) {
+    return res.status(400).json({
+      error: "No credits",
+    });
+  }
 
   const server = await prisma.GameServer.create({
     data: {

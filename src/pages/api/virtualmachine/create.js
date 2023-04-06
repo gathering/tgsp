@@ -64,6 +64,15 @@ export default async function handler(req, res) {
     },
   });
 
+  const game_servers = await prisma.GameServer.aggregate({
+    _sum: {
+      cost: true,
+    },
+    where: {
+      userId: session.user.id,
+    },
+  });
+
   const template = await prisma.VirtualServerTemplate.findUniqueOrThrow({
     where: {
       id: body.vm_template,
@@ -72,7 +81,13 @@ export default async function handler(req, res) {
 
   const size = template.sizes.find((x) => x.id === body.vm_size);
 
-  if (user.credits - servers["_sum"]["cost"] - size.cost < 0) {
+  if (
+    user.credits -
+      servers["_sum"]["cost"] -
+      game_servers["_sum"]["cost"] -
+      size.cost <
+    0
+  ) {
     return res.status(400).json({
       error: "No credits",
     });

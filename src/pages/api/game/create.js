@@ -17,9 +17,9 @@ export const charsets = {
   LOWERCASE: "abcdefghijklmnopqrstuvwxyz",
 };
 
-function makehostname() {
+function makehostname(template) {
   let length = 5;
-  let hostname = "tgsp-";
+  let hostname = `${template.name} - `;
   let charset = charsets.LOWERCASE;
   while (length--) {
     hostname += charset[crypto.randomInt(charset.length)];
@@ -58,7 +58,7 @@ export default async function handler(req, res) {
       userId: user.id,
       cost: template.cost ?? 1,
       gameServerTemplateId: template.id,
-      name: makehostname(),
+      name: makehostname(template),
     },
   });
 

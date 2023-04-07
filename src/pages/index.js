@@ -104,7 +104,7 @@ export default function Index({ user, templates, servers, game_servers }) {
                 Game Servers
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                Coming soon - stay tuned!
+                Preconfigured game servers ready for use!
               </Typography>
             </CardContent>
             {publicRuntimeConfig?.game_enabled === "true" && (

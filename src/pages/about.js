@@ -21,9 +21,8 @@ export default function About() {
       <Typography>
         By using our service, you agree to abide by the{" "}
         <Link href="https://www.gathering.org/tg23/page/reglement">
-          regulations of the event
-        </Link>{" "}
-        and Norwegian law.
+          regulations of the event.
+        </Link>
       </Typography>
       <Typography variant="h6" sx={{ pt: 1 }}>
         The following actions are strictly prohibited, but not limited to:

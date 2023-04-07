@@ -91,9 +91,7 @@ export default function GameShow({ user, game }) {
                   sx={{ fontSize: 14, pt: 1 }}
                   color="text.secondary"
                   gutterBottom
-                >
-                  Cost: {row.cost} credits
-                </Typography>
+                ></Typography>
               </CardContent>
               <CardContent>
                 {user.credits - row.cost >= 0 && (

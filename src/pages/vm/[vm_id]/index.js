@@ -158,9 +158,7 @@ export default function ShowVm({ error, server, orcInstance }) {
                 <>
                   <TableRow>
                     <StyledTableCell>Server Name</StyledTableCell>
-                    <StyledTableCell>
-                      {server.name}.tg23.gathering.org
-                    </StyledTableCell>
+                    <StyledTableCell>{server.name}.tg25.tg.no</StyledTableCell>
                   </TableRow>
                   <TableRow>
                     <StyledTableCell>Username</StyledTableCell>

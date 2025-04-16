@@ -140,6 +140,7 @@ export default async function handler(req, res) {
         ],
       },
     });
+    console.error(response);
     await prisma.VirtualServer.update({
       where: {
         id: server.id,

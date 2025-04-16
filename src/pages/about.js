@@ -20,7 +20,7 @@ export default function About() {
       </Typography>
       <Typography>
         By using our service, you agree to abide by the{" "}
-        <Link href="https://www.gathering.org/tg23/page/reglement">
+        <Link href="https://www.tg.no/event/rules">
           regulations of the event.
         </Link>
       </Typography>
@@ -33,7 +33,7 @@ export default function About() {
         <li>Carrying out DoS, DDoS, or any other kind of attacks</li>
         <li>Hosting phishing sites</li>
         <li>IP spoofing</li>
-        <li>CPU/GPU-mining</li>
+        <li>CPU-mining</li>
         <li>Sharing or distributing copyrighted material without permission</li>
       </ul>
       <Typography>

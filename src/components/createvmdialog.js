@@ -164,7 +164,7 @@ export default function CreateVmDialog({
           <FormControlLabel
             sx={{ mt: 2 }}
             control={<Checkbox />}
-            label="I am accepting the conditions of using this service and that all data will be permanently deleted on Sunday April 9th, 2023 at 06:00"
+            label="I am accepting the conditions of using this service and that all data will be permanently deleted on Sunday at 06:00"
             checked={vmConfig.terms}
             onChange={(e) => {
               setVmConfig({ ...vmConfig, terms: e.target.checked });

@@ -59,7 +59,7 @@ export default function Index({ user, templates, servers, game_servers }) {
   return (
     <>
       <Grid container spacing={5}>
-        <Grid item md={6}>
+        <Grid item md={12}>
           <Card>
             <CardMedia
               component="img"
@@ -91,7 +91,7 @@ export default function Index({ user, templates, servers, game_servers }) {
             )}
           </Card>
         </Grid>
-        <Grid item md={6}>
+        {/* <Grid item md={6}>
           <Card>
             <CardMedia
               component="img"
@@ -121,7 +121,7 @@ export default function Index({ user, templates, servers, game_servers }) {
               </CardActions>
             )}
           </Card>
-        </Grid>
+        </Grid> */}
       </Grid>
       {servers.length >= 1 && (
         <TableContainer component={Paper} sx={{ marginTop: 2 }}>

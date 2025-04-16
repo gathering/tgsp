@@ -11,7 +11,7 @@ import axios from "axios";
 import getConfig from "next/config";
 
 import Layout from "./_layout";
-import './layout.css';
+import "./layout.css";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -83,6 +83,7 @@ App.getInitialProps = async (appContext) => {
       });
       return { user: response?.data?.user };
     } catch (e) {
+      console.log(e);
       return { user: null, error: e?.data?.user };
     }
   }

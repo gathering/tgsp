@@ -2,6 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   serverRuntimeConfig: {
+    auth_enabled: process.env.AUTH_ENABLED,
     secret: process.env.NEXTAUTH_SECRET,
     nextauth: {
       client_name: process.env.CLIENT_NAME,

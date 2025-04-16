@@ -22,7 +22,6 @@ import InfoIcon from "@mui/icons-material/Info";
 import MaterialLink from "@mui/material/Link";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import Alert from "@mui/material/Alert";
 import SettingsIcon from "@mui/icons-material/Settings";
 
 export default function Layout({ user, children }) {
@@ -114,10 +113,10 @@ export default function Layout({ user, children }) {
                 height={100}
               />
             </Link>
-            <Link href="https://www.juniper.net/">
+            <Link href="https://www.arista.com/">
               <Image
-                src="https://tech.gathering.org/wp-content/themes/technical-blog-wordpress-main/static/img/partners/juniper.svg"
-                alt="juniper logo"
+                src="https://www.tg.no/tg25/sponsors/arista.svg"
+                alt="arista logo"
                 loading="lazy"
                 width={200}
                 height={100}
@@ -143,7 +142,7 @@ export default function Layout({ user, children }) {
             </Link>
           </Stack>
           <Typography variant="body2">
-            The Gathering 2023{" - "}
+            The Gathering 2025{" - "}
             <MaterialLink color="inherit" href="https://www.gathering.org">
               www.gathering.org
             </MaterialLink>

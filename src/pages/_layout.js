@@ -131,6 +131,15 @@ export default function Layout({ user, children }) {
                 height={100}
               />
             </Link>
+            <Link href="https://www.paloaltonetworks.com/">
+              <Image
+                src="https://www.tg.no/tg25/sponsors/palo-alto.svg"
+                alt="paloalto logo"
+                loading="lazy"
+                width={200}
+                height={100}
+              />
+            </Link>
             <Link href="https://www.telenor.com/">
               <Image
                 src="https://tech.gathering.org/wp-content/themes/technical-blog-wordpress-main/static/img/partners/telenor.svg"

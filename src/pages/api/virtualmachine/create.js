@@ -102,7 +102,7 @@ export default async function handler(req, res) {
       `chown ${server.username}:${server.username} -R /home/${server.username}/.ssh`,
       `chmod 700 /home/${server.username}/.ssh`,
       `chmod 600 /home/${server.username}/.ssh/authorized_keys`,
-      "curl https://gist.githubusercontent.com/olemathias/ec008ef79aaae669beb298dfd99e644f/raw/a6ae39068aec0c41ce45faef8936140d9434db82/gistfile1.txt > /etc/motd",
+      "curl https://gist.githubusercontent.com/olemathias/ec008ef79aaae669beb298dfd99e644f/raw/d1aac7dcc752e130bc5c701a7c5a327e6e181c4a/gistfile1.txt > /etc/motd",
     ];
   } else {
     userdata = [
@@ -112,7 +112,7 @@ export default async function handler(req, res) {
       `echo '${server.username} ALL=(ALL) NOPASSWD: ALL' | EDITOR='tee -a' visudo`,
       `passwd --expire ${server.username}`,
       "systemctl restart sshd",
-      "curl https://gist.githubusercontent.com/olemathias/ec008ef79aaae669beb298dfd99e644f/raw/a6ae39068aec0c41ce45faef8936140d9434db82/gistfile1.txt > /etc/motd",
+      "curl https://gist.githubusercontent.com/olemathias/ec008ef79aaae669beb298dfd99e644f/raw/d1aac7dcc752e130bc5c701a7c5a327e6e181c4a/gistfile1.txt > /etc/motd",
     ];
   }
 

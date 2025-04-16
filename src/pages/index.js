@@ -38,21 +38,12 @@ export async function getServerSideProps(context) {
     },
   });
 
-  const game_servers = await prisma.GameServer.findMany({
-    where: { userId: session.user.id },
-    select: {
-      id: true,
-      name: true,
-      gameServerTemplate: true,
-    },
-  });
-
   return {
-    props: { templates, servers, game_servers },
+    props: { templates, servers },
   };
 }
 
-export default function Index({ user, templates, servers, game_servers }) {
+export default function Index({ user, templates, servers }) {
   const router = useRouter();
   const [openVmDialog, setOpenVmDialog] = useState(false);
 
@@ -91,37 +82,6 @@ export default function Index({ user, templates, servers, game_servers }) {
             )}
           </Card>
         </Grid>
-        {/* <Grid item md={6}>
-          <Card>
-            <CardMedia
-              component="img"
-              height="200"
-              image="/game.jpg"
-              alt="game server"
-            />
-            <CardContent>
-              <Typography gutterBottom variant="h4" component="div">
-                Game Servers
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Preconfigured game servers ready for use!
-              </Typography>
-            </CardContent>
-            {publicRuntimeConfig?.game_enabled === "true" && (
-              <CardActions>
-                <Button
-                  color="primary"
-                  variant="outlined"
-                  onClick={() => {
-                    router.push("/game");
-                  }}
-                >
-                  See available games
-                </Button>
-              </CardActions>
-            )}
-          </Card>
-        </Grid> */}
       </Grid>
       {servers.length >= 1 && (
         <TableContainer component={Paper} sx={{ marginTop: 2 }}>
@@ -149,36 +109,6 @@ export default function Index({ user, templates, servers, game_servers }) {
                   </TableCell>
                   <TableCell>{row.virtualServerTemplate.name}</TableCell>
                   <TableCell>{row.virtualServerSize}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      )}
-      {game_servers.length >= 1 && (
-        <TableContainer component={Paper} sx={{ marginTop: 2 }}>
-          <Typography variant="h4" sx={{ marginLeft: 1, marginTop: 1 }}>
-            My Game Servers
-          </Typography>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell>Type</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {game_servers.map((row) => (
-                <TableRow key={row.id}>
-                  <TableCell component="th" scope="row">
-                    <Button
-                      href={`/game/server/${row.id}`}
-                      LinkComponent={Link} // NextJS Link
-                    >
-                      {row.name}
-                    </Button>
-                  </TableCell>
-                  <TableCell>{row.gameServerTemplate.name}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
